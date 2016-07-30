@@ -111,7 +111,8 @@ WELCOME_MESSAGE = "Welcome to the final exam schedule plotter.\n"
 FAREWELL_MESSAGE = "Thank you for visiting!"
 PRESS_ENTER_MESSAGE = "(Press enter to continue)\n"
 HELP_MESSAGE = "This tool will prompt you for your classes and generate a text-based calendar to display your final " \
-               "exam schedule.\n" + PRESS_ENTER_MESSAGE
+               "exam schedule. Please follow the instructions on the screen and provide information as requested.\n" + \
+               PRESS_ENTER_MESSAGE
 SCHEDULER_MESSAGE = "Let's start building your final exam schedule!\n" + PRESS_ENTER_MESSAGE
 
 IS_CLASS_SPECIAL = "Is your class in the following list? If so, please select the class:\n{}(Choose an option): "

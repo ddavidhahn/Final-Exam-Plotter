@@ -20,8 +20,11 @@ class Calendar:
         return result
 
     def generate_calendar(self):
-        print("generating calendar")
         bins = self._assign_classes_to_bins()
+        print(bins)
+        max_height = self._get_max_height(bins)
+        print(max_height)
+
 
     def _assign_classes_to_bins(self):
         bins = {i: {j: [] for j in range(1, len(EXAM_TIME_BLOCKS) + 1)} for i in range(1, len(EXAM_DAYS) + 1)}
@@ -29,6 +32,15 @@ class Calendar:
             final_day, final_time = lecture.final_day, lecture.final_time
             bins[final_day][final_time].append(lecture)
         return bins
+
+    def _get_max_height(self, bins):
+        max_height = 0
+        for day in bins:
+            current_height = 0
+            for time in bins[day]:
+                current_height += len(bins[day][time])
+            max_height = max(max_height, current_height)
+        return max_height
 
     def __str__(self):
         result = ""
