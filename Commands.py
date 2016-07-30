@@ -1,6 +1,5 @@
 from collections import OrderedDict
 
-
 class OptionsCollection:
     INITIAL_PROMPT_MESSAGE = "What would you like to do?\n{}(Choose an option): "
     INVALID_OPTION_SELECTED_MESSAGE = "That is not an option. Please choose again: "
@@ -8,7 +7,10 @@ class OptionsCollection:
     def __init__(self, commands, prompt_message=INITIAL_PROMPT_MESSAGE, invalid_option_message=INVALID_OPTION_SELECTED_MESSAGE):
         self.prompt_message = prompt_message
         self.invalid_option_message = invalid_option_message
-        self.commands = OrderedDict(commands)
+        self.commands = OrderedDict()
+        for command in commands:
+            key, value = command
+            self.commands[key] = value
 
     def prompt(self):
         while True and len(self.commands) > 0:
@@ -23,6 +25,10 @@ class OptionsCollection:
                 return self.commands[selection].execute()
             else:
                 self.commands[selection].execute()
+
+    def add_option(self, option_to_add):
+        key, value = option_to_add
+        self.commands[key] = value
 
     def keys(self):
         return self.commands.keys()
