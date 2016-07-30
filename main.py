@@ -104,16 +104,6 @@ def convert_calendar_to_remove_options(calendar, allow_cancel=False):
         commands_list.append((str(cancel_key + 1), Command("({}) Cancel".format(cancel_key + 1), lambda: None)))
     return OptionsCollection(commands_list, prompt_message=WHICH_CLASS_TO_REMOVE)
 
-def convert_dictionary_to_options_collection(dictionary_to_convert, prompt_message=None):
-    commands_list = []
-    count = 1
-    for key in dictionary_to_convert:
-        dictionary_option = dictionary_to_convert[key]
-        commands_list.append((str(count), Command("({}) {}".format(count, dictionary_option), helper_outer(lambda x: x, dictionary_option))))
-        count += 1
-    if prompt_message is not None:
-        return OptionsCollection(commands_list, prompt_message=prompt_message)
-    return OptionsCollection(commands_list)
 
 def convert_list_to_options_collection(list_to_convert, prompt_message=None):
     commands_list = []
