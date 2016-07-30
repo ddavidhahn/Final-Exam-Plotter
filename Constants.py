@@ -114,6 +114,7 @@ HELP_MESSAGE = "This tool will prompt you for your classes and generate a text-b
                "exam schedule.\n" + PRESS_ENTER_MESSAGE
 SCHEDULER_MESSAGE = "Let's start building your final exam schedule!\n" + PRESS_ENTER_MESSAGE
 
+IS_CLASS_SPECIAL = "Is your class in the following list? If so, please select the class:\n{}(Choose an option): "
 NAME_OF_CLASS = "Name and course number of class: "
 BLANK_NAME_OF_CLASS = "The name cannot be blank: "
 DAYS_OF_LECTURE_PROMPT = "What day(s) does this class have lecture on?\n{}(Choose an option): "

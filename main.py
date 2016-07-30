@@ -17,32 +17,44 @@ def main():
 
 def add_class_helper(calendar):
     def add_class_procedure():
+        special_class_options = convert_list_to_options_collection(list(CLASS_TO_EXAM_TIME.keys()), IS_CLASS_SPECIAL)
+        option_index = str(len(special_class_options) + 1)
+        option_to_add = (option_index, Command("({}) None of the above".format(option_index), helper_outer(lambda x: x, None)))
+        special_class_options.add_option(option_to_add)
+        special_class_name = special_class_options.prompt()
+
         name = input(NAME_OF_CLASS)
         while name == "":
             name = input(BLANK_NAME_OF_CLASS)
         print()
 
-        days_options = convert_list_to_options_collection(LECTURE_DAY_OPTIONS, prompt_message=DAYS_OF_LECTURE_PROMPT)
-        day = days_options.prompt()
-
-        time = ""
-        if day != "Su" and day != "Sa":
-            times_options = convert_list_to_options_collection(LECTURE_START_TIMES, prompt_message=START_TIMES_OF_LECTURE_PROMPT)
-            time = times_options.prompt()
-        datetime_key = "{} {}".format(day, time)
-        if datetime_key in LECTURE_TIME_TO_EXAM_TIME:
-            final_day, final_time = LECTURE_TIME_TO_EXAM_TIME[datetime_key]
-            new_class = Class(name, day, time, final_day, final_time)
+        if special_class_name is not None:
+            final_day, final_time = CLASS_TO_EXAM_TIME[special_class_name]
+            new_class = Class(name, special_class_name, "", final_day, final_time)
             calendar.add_class(new_class)
             input(CLASS_ADD_SUCCESS.format(str(new_class)))
         else:
-            input(LECTURE_DATETIME_NOT_FOUND)
+            days_options = convert_list_to_options_collection(LECTURE_DAY_OPTIONS, prompt_message=DAYS_OF_LECTURE_PROMPT)
+            day = days_options.prompt()
+
+            time = ""
+            if day != "Su" and day != "Sa":
+                times_options = convert_list_to_options_collection(LECTURE_START_TIMES, prompt_message=START_TIMES_OF_LECTURE_PROMPT)
+                time = times_options.prompt()
+            datetime_key = "{} {}".format(day, time)
+            if datetime_key in LECTURE_TIME_TO_EXAM_TIME:
+                final_day, final_time = LECTURE_TIME_TO_EXAM_TIME[datetime_key]
+                new_class = Class(name, day, time, final_day, final_time)
+                calendar.add_class(new_class)
+                input(CLASS_ADD_SUCCESS.format(str(new_class)))
+            else:
+                input(LECTURE_DATETIME_NOT_FOUND)
     return add_class_procedure
 
 
 def remove_class_helper(calendar):
     def remove_class_procedure():
-        remove_class_commands = convert_calendar_to_options_collection(calendar, allow_cancel=True)
+        remove_class_commands = convert_calendar_to_remove_options(calendar, allow_cancel=True)
         if len(remove_class_commands) > 0:
             removed_class = remove_class_commands.prompt()
             if removed_class is not None:
@@ -80,7 +92,7 @@ def helper_outer(function, *args):
     return helper_inner
 
 
-def convert_calendar_to_options_collection(calendar, allow_cancel=False):
+def convert_calendar_to_remove_options(calendar, allow_cancel=False):
     commands_list = []
     classes_dict = calendar.convert_to_dict()
     for class_key in classes_dict:
@@ -92,13 +104,25 @@ def convert_calendar_to_options_collection(calendar, allow_cancel=False):
         commands_list.append((str(cancel_key + 1), Command("({}) Cancel".format(cancel_key + 1), lambda: None)))
     return OptionsCollection(commands_list, prompt_message=WHICH_CLASS_TO_REMOVE)
 
+def convert_dictionary_to_options_collection(dictionary_to_convert, prompt_message=None):
+    commands_list = []
+    count = 1
+    for key in dictionary_to_convert:
+        dictionary_option = dictionary_to_convert[key]
+        commands_list.append((str(count), Command("({}) {}".format(count, dictionary_option), helper_outer(lambda x: x, dictionary_option))))
+        count += 1
+    if prompt_message is not None:
+        return OptionsCollection(commands_list, prompt_message=prompt_message)
+    return OptionsCollection(commands_list)
 
 def convert_list_to_options_collection(list_to_convert, prompt_message=None):
     commands_list = []
     for i in range(1, len(list_to_convert) + 1):
-        day_option = list_to_convert[i - 1]
-        commands_list.append((str(i), Command("({}) {}".format(i, day_option), helper_outer(lambda x: x, day_option))))
-    return OptionsCollection(commands_list, prompt_message=prompt_message)
+        list_option = list_to_convert[i - 1]
+        commands_list.append((str(i), Command("({}) {}".format(i, list_option), helper_outer(lambda x: x, list_option))))
+    if prompt_message is not None:
+        return OptionsCollection(commands_list, prompt_message=prompt_message)
+    return OptionsCollection(commands_list)
 
 
 if __name__ == '__main__':
