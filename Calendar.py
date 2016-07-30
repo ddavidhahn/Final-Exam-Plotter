@@ -12,7 +12,7 @@ class Calendar:
         self.classes = self.classes[:index_to_remove] + self.classes[index_to_remove + 1:]
         return class_to_remove
 
-    # Note that starting_index is the starting index for the keys of the returned dictionary. 
+    # Note that starting_index is the starting index for the keys of the returned dictionary.
     def convert_to_dict(self, starting_index=1):
         result = {}
         for i in range(starting_index, starting_index + len(self.classes)):
