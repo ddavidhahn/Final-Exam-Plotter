@@ -33,8 +33,8 @@
 #
 #
 
-Computer Science 161 | TuTh | after 5:00pm
-Computer Science 194-26 | TuTh | 11:00am
-Korean 100BX | Foreign Language |
-Asian American Studies 143AC | TuTh | 3:30pm
+CS 161 | TuTh | after 5:00pm
+CS 194-26 | TuTh | 11:00am
+K 100BX | Foreign Language |
+ASAMST 143AC | TuTh | 3:30pm
 Nonexistent Lecture Time | MTWTF | after 5:00pm
