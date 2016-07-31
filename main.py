@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from sys import version_info
+
 from Constants import *
 from Calendar import *
 from Class import *
