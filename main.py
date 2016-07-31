@@ -1,10 +1,29 @@
 #!/usr/bin/python
 
+from sys import version_info
 from Constants import *
 from Calendar import *
 from Class import *
 
 def main():
+    args = sys.argv
+    num_args = len(args)
+    if num_args > 1:
+        if num_args > 2:
+            print("Expected 2 arguments but got {}. Arguments: {}".format(num_args, str(args)))
+            sys.exit(1)
+        else:
+            file_name = args[1]
+            automated_head(file_name)
+
+    else:
+        if sys.version_info < (3, 0):
+            print("Interactive mode requires Python version 3.x.")
+            sys.exit(1)
+        else:
+            interactive_head()
+
+def interactive_head():
     base_commands = OptionsCollection([
         ("1", Command("(1) Generate a new schedule", generate_schedule, loop=True)),
         ("2", Command("(2) Help", lambda: input(HELP_MESSAGE), loop=True)),
@@ -13,6 +32,77 @@ def main():
 
     print(WELCOME_MESSAGE)
     base_commands.prompt()
+
+
+def automated_head(file_name):
+    user_calendar = Calendar()
+    ignored_entries = []
+    try:
+        with open(file_name) as f:
+            for line in f:
+                lecture_string = line[:-1]
+                lecture_string = lecture_string.strip()
+
+                if len(lecture_string) == 0 or \
+                   (len(lecture_string) > 0 and lecture_string[0] == '#') or \
+                   (len(lecture_string) > 1 and lecture_string[:2] == "//"):
+                    continue
+
+                lecture_parameters = lecture_string.split("|")
+                validate_parameters(lecture_parameters, lecture_string)
+
+                for i in range(len(lecture_parameters)):
+                    lecture_parameters[i] = lecture_parameters[i].strip()
+
+
+                course_name, course_days, course_time = lecture_parameters
+                final_day, final_time = validate_course_days_and_time(course_days, course_time, lecture_string)
+                if final_day is None or final_time is None:
+                    ignored_entries.append(lecture_string)
+                    continue
+
+                course = Class(course_name, course_days, course_time, final_day, final_time)
+                user_calendar.add_class(course)
+
+    except IOError as e:
+        print(e)
+        sys.exit(1)
+
+    print(user_calendar.generate_calendar())
+    ignored_entries_message = IGNORED_ENTRIES_MESSAGE
+    for entry in ignored_entries:
+        ignored_entries_message += entry + "\n"
+    print(ignored_entries_message)
+
+def validate_parameters(lecture_parameters, lecture_string):
+    NUM_PARAMETERS = 3
+    try:
+        assert len(lecture_parameters) == NUM_PARAMETERS
+    except AssertionError as e:
+        print(LINE_NOT_FORMATTED_CORRECTLY.format(lecture_string) +
+              EXTRA_PARAMETERS_FOUND.format(lecture_parameters[NUM_PARAMETERS:]))
+        sys.exit(1)
+
+
+def validate_course_days_and_time(course_days, course_time, lecture_string):
+    if course_days not in LECTURE_DAY_OPTIONS and course_days not in CLASS_TO_EXAM_TIME.keys():
+        print(LINE_NOT_FORMATTED_CORRECTLY.format(lecture_string) +
+              DAY_NOT_VALID.format(course_days))
+        sys.exit(1)
+
+    if course_days not in CLASS_TO_EXAM_TIME and course_time not in LECTURE_START_TIMES:
+        print(LINE_NOT_FORMATTED_CORRECTLY.format(lecture_string) +
+              TIME_NOT_VALID.format(course_time))
+        sys.exit(1)
+
+    if course_days in CLASS_TO_EXAM_TIME:
+        return CLASS_TO_EXAM_TIME[course_days]
+
+    course_day_time_key = course_days + " " + course_time
+    if course_day_time_key in LECTURE_TIME_TO_EXAM_TIME:
+        return LECTURE_TIME_TO_EXAM_TIME[course_day_time_key]
+    else:
+        return None, None
 
 
 def add_class_helper(calendar):
@@ -70,6 +160,7 @@ def display_classes_helper(calendar):
     def display_classes_procedure():
         input(str(calendar) + PRESS_ENTER_MESSAGE)
     return display_classes_procedure
+
 
 def generate_calendar_helper(calendar):
     def generate_calendar_procedure():
