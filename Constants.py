@@ -19,9 +19,9 @@ EXAM_TIME_BLOCKS = {
 FORMATTED_EXAM_TIME_BLOCKS = {time: EXAM_TIME_BLOCKS[time] + " - " for time in EXAM_TIME_BLOCKS}
 
 LECTURE_DAY_OPTIONS = ["MWF", "MTWTF", "TuTh", "Sa", "Su"]
-LECTURE_START_TIMES = ["9:00am", "9:30am", "10:00am", "10:30am", "11:00am", "11:30am", "12:00pm", "12:30pm",
-                       "1:00pm", "1:30pm", "2:00pm", "2:30pm", "3:00pm", "3:30pm", "4:00pm", "4:30pm",
-                       "after 5:00pm"]
+LECTURE_START_TIMES = ["8:00am", "8:30am", "9:00am", "9:30am", "10:00am", "10:30am", "11:00am", "11:30am", 
+                       "12:00pm", "12:30pm", "1:00pm", "1:30pm", "2:00pm", "2:30pm", "3:00pm", "3:30pm", 
+                       "4:00pm", "4:30pm", "after 5:00pm"]
 
 LECTURE_TIME_TO_EXAM_TIME = {
     "MWF 10:00am": (1, 1),
