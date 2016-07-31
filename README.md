@@ -5,15 +5,19 @@
 Interactive mode will guide you through the process of adding classes to your calendar and additionally provides you the options of actively editing your added classes.
 This mode is ideal for users who want to be able to actively manipulate and view final exam schedules but do not want to hassle with writing an input file.
 
-To run interactive mode, use the following command: `python3 main.py`
+To run interactive mode, use the following command:
+```python3 main.py```
 Please note that interactive mode requires Python 3.
 
 ## Automatic Mode
 
 If you opt for a more systematic method of generating your calendar, you can use the automatic mode. This will take an input file and read its lines as parameters.
+To run automatic mode on an input file named `sample_input_file.txt`, use the following command:
+```python main.py sample_input_file.txt```
+Please note that automatic mode can be run in both Python 2 and Python 3.
 
 Ensure that you are using the following guidelines for formatting the lines of your input file. Each line represents a course and should be formatted accordingly:
-`__course_name_and_number__ | __lecture_days__ | __lecture_start_time__`
+```__course_name_and_number__ | __lecture_days__ | __lecture_start_time__```
 ```
 #
 # Here is an example:
