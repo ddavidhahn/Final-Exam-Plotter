@@ -28,7 +28,7 @@ Here is an example:
 ```
 CS 161 | TuTh | after 5:00pm
 ```
-Note that your lecture day and lecture start time must match exactly. For a complete list, please consult the README file.
+Note that your lecture day and lecture start time must match exactly. For a complete list, please consult the [list section](#daytime_list).
 
 ### Special cases
 If your course is a special course (Chemistry 1A, Chemistry 1B, Economics 1, or Economics 100B), simply leave the full course name and number in the `__lecture_days__` slot and leave the `__lecture_start_time__` empty.
@@ -56,7 +56,7 @@ Also note that your calendar entries will be left and right stripped for white s
 
 Additionally, you can start comments using "\#" or "//"
 
-## List of Class Days and Times
+## <a name="daytime_list"></a>List of Class Days and Times
 ```
 MWF
 MTWTF
