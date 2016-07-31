@@ -71,6 +71,11 @@ def display_classes_helper(calendar):
         input(str(calendar) + PRESS_ENTER_MESSAGE)
     return display_classes_procedure
 
+def generate_calendar_helper(calendar):
+    def generate_calendar_procedure():
+        input(calendar.generate_calendar() + PRESS_ENTER_MESSAGE)
+    return generate_calendar_procedure
+
 
 def generate_schedule(*args):
     user_calendar = Calendar()
@@ -78,7 +83,7 @@ def generate_schedule(*args):
         ("1", Command("(1) Add a class", add_class_helper(user_calendar), loop=True)),
         ("2", Command("(2) Remove a class", remove_class_helper(user_calendar), loop=True)),
         ("3", Command("(3) Display added classes", display_classes_helper(user_calendar), loop=True)),
-        ("4", Command("(4) Generate calendar", lambda: user_calendar.generate_calendar(), loop=True)),
+        ("4", Command("(4) Generate calendar", generate_calendar_helper(user_calendar), loop=True)),
         ("5", Command("(5) Go back (your current calendar will be lost)", loop=False))
     ])
 

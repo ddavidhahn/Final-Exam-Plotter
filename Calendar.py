@@ -21,50 +21,49 @@ class Calendar:
 
     def generate_calendar(self):
         bins = self._assign_classes_to_bins()
-        print(bins)
+
         max_widths = {}
         for i in range(1, len(EXAM_DAYS) + 1):
             max_widths[i] = self._get_max_width_for_day(bins, i)
-        print(max_widths)
 
         max_heights = {}
         for i in range(1, len(EXAM_TIME_BLOCKS) + 1):
             max_heights[i] = self._get_max_height_for_time(bins, i)
 
-        calendar_string = self._generate_day_header(max_widths)
+        calendar_string = self._generate_day_header_and_footer(max_widths)
+        guts = ""
         for time in bins:
-            row = "|"
+            cell_row = 0
+            while True:
+                row_string = "|"
+                for day in bins[time]:
+                    if cell_row == 0:
+                        cell = " {}".format(FORMATTED_EXAM_TIME_BLOCKS[time])
+                    else:
+                        cell = " " * (len(EXAM_TIME_BLOCKS[time]) + 1)
 
-            for day in bins[time]:
-                entries_for_time = 0
+                    lecture_list = bins[time][day]
+                    max_width = max_widths[day]
 
-                cell = " {}".format(FORMATTED_EXAM_TIME_BLOCKS[time])
-                lecture_list = bins[time][day] # TODO: Need to adapt this to handle multiple clases on same day to show collision
-                max_width = max_widths[day]
+                    if cell_row < len(lecture_list):
+                        lecture = lecture_list[cell_row]
+                        entry_string = lecture.name if cell_row == 0 else " - " + lecture.name
+                        cell += entry_string
 
-                for i in range(len(lecture_list)):
-                    lecture = lecture_list[i]
-                    entry_string = lecture.name
+                    # Fill in the rest of the cell with spaces
+                    # Account for the extra space we prepended since max_width doesn't consider the formatting characters
+                    while len(cell) <= max_width:
+                        cell += " "
+                    row_string += cell + " |"
 
-                    if i != 0:
-                        entry_string = " - " + entry_string
-                        entry_string = " " * (max_width - len(entry_string)) + entry_string
+                guts += row_string + "\n"
+                cell_row += 1
+                if cell_row >= max_heights[time]:
+                    break
 
-                    cell += entry_string
-                    entries_for_time += 1
+        return calendar_string.format(guts)
 
-                # Fill in the rest of the cell with spaces
-                # Account for the extra space we prepended since max_width doesn't consider the formatting characters
-                while len(cell) <= max_width:
-                    cell += " "
-                row += cell + " |"
-
-                if entries_for_time < max_heights[time]:
-                    pass
-            calendar_string += row + "\n"
-        print(calendar_string)
-
-    def _generate_day_header(self, max_widths_for_days):
+    def _generate_day_header_and_footer(self, max_widths_for_days):
         header = "|"
         for i in range(1, len(EXAM_DAYS) + 1):
             exam_day = EXAM_DAYS[i]
@@ -74,7 +73,6 @@ class Calendar:
             current_cell_length = len(exam_day) + len(spacers)
             difference = current_cell_length - max_width
             index_to_cut_off_at = current_cell_length - difference - len(exam_day)
-            print("{} {} {} {}".format(current_cell_length, max_width, difference, index_to_cut_off_at))
 
             if spacers == "":
                 spacers == " "
@@ -84,7 +82,7 @@ class Calendar:
 
         header += "\n"
         hat = len(header) * "-" + "\n"
-        return hat + header + hat
+        return hat + header + hat + "{}" + hat
 
     def _generate_time_entry(self):
         pass
@@ -100,7 +98,6 @@ class Calendar:
         max_width = 0
         for time in bins:
             lecture_list = bins[time][day]
-            print(lecture_list)
             width = len(FORMATTED_EXAM_TIME_BLOCKS[time])
             if len(lecture_list) > 0:
                 max_width_lecture = max(lecture_list, key=lambda e: len(e.name))
