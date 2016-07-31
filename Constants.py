@@ -10,11 +10,13 @@ EXAM_DAYS = {
 }
 
 EXAM_TIME_BLOCKS = {
-    1: "08:00am - 11:00am",
-    2: "11:30am - 02:30pm",
-    3: "03:00pm - 06:00pm",
-    4: "07:00pm - 10:00pm"
+    1: "08:00am",
+    2: "11:30am",
+    3: "03:00pm",
+    4: "07:00pm"
 }
+
+FORMATTED_EXAM_TIME_BLOCKS = {time: EXAM_TIME_BLOCKS[time] + " - " for time in EXAM_TIME_BLOCKS}
 
 LECTURE_DAY_OPTIONS = ["MWF", "MTWTF", "TuTh", "Sa", "Su"]
 LECTURE_START_TIMES = ["09:00am", "09:30am", "10:00am", "10:30am", "11:00am", "11:30am", "12:00pm", "12:30pm",
@@ -97,15 +99,15 @@ LECTURE_TIME_TO_EXAM_TIME = {
     "TuTh 04:30pm": (5, 4)
 }
 
-CLASS_TO_EXAM_TIME = {
-    "Chemistry 1A": (1, 3),
-    "Chemistry 1B": (1, 3),
+CLASS_TO_EXAM_TIME = OrderedDict([
 
-    "Economics 1": (2, 2),
-    "Economics 100B": (2, 2),
+    ("Chemistry 1A", (1, 3)),
+    ("Chemistry 1B", (1, 3)),
+    ("Economics 1", (2, 2)),
+    ("Economics 100B", (2, 2)),
+    ("Foreign Languages", (3, 2)),
 
-    "Foreign Languages": (3, 2),
-}
+])
 
 WELCOME_MESSAGE = "Welcome to the final exam schedule plotter.\n"
 FAREWELL_MESSAGE = "Thank you for visiting!"
