@@ -14,10 +14,14 @@ Please note that interactive mode requires Python 3.
 ## Automatic Mode
 
 If you opt for a more systematic method of generating your calendar, you can use the automatic mode. This will take an input file and read its lines as parameters.
+
 To run automatic mode on an input file named `sample_input_file.txt`, use the following command:
 ```
 python main.py sample_input_file.txt
 ```
+
+### Input file formatting
+
 Please note that automatic mode can be run in both Python 2 and Python 3.
 
 Ensure that you are using the following guidelines for formatting the lines of your input file. Each line represents a course and should be formatted accordingly:
